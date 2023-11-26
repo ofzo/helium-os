@@ -6,7 +6,6 @@
 .macro LOAD_GP n
     ld x\n,\n*8(sp)
 .endm
-
     .section .text
     .global __alltraps
     .global __restore
@@ -25,7 +24,7 @@ __alltraps:
     csrr t0, sstatus
     csrr t1, sepc
     sd t0, 32*8(sp)
-    sd t1, 32*8(sp)
+    sd t1, 33*8(sp)
     csrr t2, sscratch
     sd t2, 2*8(sp)
     mv a0,sp
@@ -38,7 +37,7 @@ __restore:
     ld t2, 2*8(sp)
     csrw sstatus, t0
     csrw sepc, t1
-    csrw sstatus, t2
+    csrw sscratch, t2
     ld x1, 1*8(sp)
     ld x3, 3*8(sp)
     .set n, 5
@@ -47,5 +46,5 @@ __restore:
         .set n, n+1
     .endr
     addi sp, sp, 34*8
-    csrrw sp, sstatus, sp
+    csrrw sp, sscratch, sp
     sret

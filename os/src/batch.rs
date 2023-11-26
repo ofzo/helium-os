@@ -72,7 +72,8 @@ impl AppManager {
     }
     unsafe fn load_app(&self, id: usize) {
         if id >= self.num_app {
-            shutdown(Some("[Helium]: all application complete!"));
+            println!("[Helium]: all application complete!");
+            shutdown(false);
         }
         println!("[Helium]: app_{} loading", id);
         core::slice::from_raw_parts_mut(APP_BASE_ADDRESS as *mut u8, APP_SIZE_LIMIT).fill(0);

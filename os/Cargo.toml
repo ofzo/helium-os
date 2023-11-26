@@ -10,3 +10,7 @@ edition = "2021"
 lazy_static = { version = "1.4.0", features = ["spin_no_std"] }
 # riscv = { version = "0.10.1", features = ["inline-asm"] }
 riscv = "0.10.1"
+sbi-rt = { version = "0.0.2", features = ["legacy"] }
+
+[profile.release]
+debug = true

@@ -5,8 +5,6 @@ TARGET_DIR := target/$(TARGET)/$(MODE)
 OBJDUMP := rust-objdump --arch-name=riscv64
 OBJCOPY := rust-objcopy --binary-architecture=riscv64
 
-std:
-	@cd std && make build
 
 build:
 	@cargo build --release 

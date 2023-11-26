@@ -23,7 +23,6 @@ global_asm!(include_str!("link_app.S"));
 pub fn rust_main() {
     clear_bss();
     println!("====[Helium]=================================");
-    println!("Hello, Helium OS");
     trap::init();
     batch::init();
     batch::run_next_app();

@@ -14,31 +14,37 @@ pub const SYSCALL_EXIT: usize = 93;
 
 #[inline(always)]
 pub fn sbi_call(which: usize, arg0: usize, arg1: usize, arg2: usize) -> usize {
-    let mut ret;
+    let mut error;
     unsafe {
         asm! {
             "ecall",
-            inlateout("x10") arg0 => ret,
+            inlateout("x10") arg0 => error,
             in("x11") arg1,
             in("x12") arg2,
             in("x17") which
         }
     };
-    ret
+    error
 }
 
 pub fn consle_putchar(c: usize) {
-    sbi_call(SBI_CONSOLE_PUTCHAR, c, 0, 0);
+    // sbi_call(SBI_CONSOLE_PUTCHAR, c, 0, 0);
+
+    #[allow(deprecated)]
+    sbi_rt::legacy::console_putchar(c);
 }
 
 pub fn exit(code: i32) {
     sbi_call(SYSCALL_EXIT, code as usize, 0, 0);
 }
 
-pub fn shutdown(message: Option<&str>) {
-    if let Some(msg) = message {
-        crate::println!("{}", msg);
-    };
-    sbi_call(SBI_SHUTDOWN, 0, 0, 0);
-    exit(0);
+pub fn shutdown(failure: bool) {
+    use sbi_rt::{system_reset, NoReason, Shutdown, SystemFailure};
+    if failure {
+        system_reset(Shutdown, NoReason);
+    } else {
+        system_reset(Shutdown, SystemFailure);
+    }
+    // sbi_call(SBI_SHUTDOWN, 0, 0, 0);
+    unreachable!()
 }

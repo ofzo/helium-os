@@ -13,6 +13,6 @@ fn panic(info: &PanicInfo) -> ! {
     } else {
         crate::println!("Paniced: {}", info.message().unwrap());
     }
-    crate::sbi::shutdown(None);
+    crate::sbi::shutdown(true);
     loop {}
 }
