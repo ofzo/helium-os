@@ -21,6 +21,7 @@ macro_rules! print {
         $crate::stdout::print(format_args!($fmt $(, $($arg)+)?));
     };
 }
+
 #[macro_export]
 macro_rules! println {
     ($fmt: literal $(, $($arg: tt)+)?) => {

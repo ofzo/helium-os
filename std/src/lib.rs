@@ -8,6 +8,7 @@ mod lang_items;
 mod syscall;
 
 pub use stdout::print;
+pub use syscall::sys_yield;
 pub use syscall::{sys_exit as exit, sys_write as write};
 
 #[no_mangle]

@@ -8,7 +8,7 @@ use riscv::register::{
     utvec::TrapMode,
 };
 
-use crate::{batch::run_next_app, syscall::syscall};
+use crate::syscall::syscall;
 
 global_asm!(include_str!("trap.S"));
 
@@ -55,11 +55,9 @@ pub fn trap_handler(cx: &mut TrapContext) -> &mut TrapContext {
         scause::Trap::Exception(Exception::StoreFault)
         | scause::Trap::Exception(Exception::StorePageFault) => {
             println!("[Helium]: Exception::StorePageFault | Exception::StoreFault");
-            run_next_app()
         }
         scause::Trap::Exception(Exception::IllegalInstruction) => {
             println!("[Helium]: Exception::IllegalInstruction");
-            run_next_app()
         }
         _ => {
             panic!("unsupport trap {:?},  stval= {:#x}!", scause.cause(), stval);

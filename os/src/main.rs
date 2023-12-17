@@ -10,11 +10,14 @@ mod sbi;
 
 #[macro_use]
 mod stdout;
-mod batch;
+mod loader;
 mod sync;
 mod syscall;
+mod task;
 mod trap;
 use core::arch::global_asm;
+
+use crate::task::run_first;
 
 global_asm!(include_str!("entry.asm"));
 global_asm!(include_str!("link_app.S"));
@@ -24,8 +27,8 @@ pub fn rust_main() {
     clear_bss();
     println!("====[Helium]=================================");
     trap::init();
-    batch::init();
-    batch::run_next_app();
+    loader::load_apps();
+    run_first();
     // sbi::shutdown(Some("Shutdown os"));
 }
 
